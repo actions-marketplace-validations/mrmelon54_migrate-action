@@ -12,11 +12,15 @@ import (
 
 func queryEscape(s string) string {
 	split := strings.Split(s, "://")
+	if len(split) != 2 {
+		panic("invalid database uri")
+	}
 	usernamePassword := strings.Split(split[1], "@")
 	password := strings.Split(usernamePassword[0], ":")
-	replaced := strings.Replace(s, password[1], url.QueryEscape(password[1]), 3)
-
-	return replaced
+	if len(password) == 2 {
+		s = strings.Replace(s, password[1], url.QueryEscape(password[1]), 3)
+	}
+	return s
 }
 
 func main() {
