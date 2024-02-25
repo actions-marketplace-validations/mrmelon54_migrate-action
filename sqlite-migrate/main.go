@@ -16,8 +16,8 @@ func main() {
 	databaseFlag := flag.String("database", "", "")
 	flag.String("prefetch", "", "")
 	flag.String("lock-timeout", "", "")
-	flag.String("verbose", "", "")
-	flag.String("version", "", "")
+	flag.Bool("verbose", false, "")
+	flag.Bool("version", false, "")
 	flag.Parse()
 	args := flag.Args()
 
