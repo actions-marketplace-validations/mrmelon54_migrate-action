@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"github.com/golang-migrate/migrate/v4"
 	_ "github.com/golang-migrate/migrate/v4/database/sqlite3"
 	_ "github.com/golang-migrate/migrate/v4/source/file"
@@ -49,4 +50,9 @@ func main() {
 	default:
 		panic("invalid command")
 	}
+
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println("Migrate successful")
 }
