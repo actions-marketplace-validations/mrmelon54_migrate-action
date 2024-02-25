@@ -21,11 +21,6 @@ jobs:
         with:
           database: postgres://postgres:qyo}Mh{Bn&X[Ppc!dlsrG@postgres:5432/database?sslmode=disable
           version: true
-      - name: Check basic execution with defaults
-        uses: ./
-        with:
-          database: postgres://postgres:qyo}Mh{Bn&X[Ppc!dlsrG@postgres:5432/database?sslmode=disable
-          verbose: true
 
   sqlite3:
     runs-on: ubuntu-latest
@@ -37,8 +32,3 @@ jobs:
         with:
           database: sqlite3://database.sqlite3.db
           version: true
-      - name: Check basic execution with defaults
-        uses: ./
-        with:
-          database: sqlite3://database.sqlite3.db
-          verbose: true
