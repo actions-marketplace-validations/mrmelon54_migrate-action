@@ -1,7 +1,7 @@
-on: [push]
-
+name: test
+on: [ push ]
 jobs:
-  test:
+  postgresql:
     runs-on: ubuntu-latest
     name: Test migrate up with postgres
     services:
@@ -14,9 +14,8 @@ jobs:
         ports:
           - 5432:5432
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
-    steps:  
-      - name: Checkout
-        uses: actions/checkout@v3
+    steps:
+      - uses: actions/checkout@v3
       - name: Check with version flag
         uses: ./
         with:
@@ -26,4 +25,20 @@ jobs:
         uses: ./
         with:
           database: postgres://postgres:qyo}Mh{Bn&X[Ppc!dlsrG@postgres:5432/database?sslmode=disable
+          verbose: true
+
+  sqlite3:
+    runs-on: ubuntu-latest
+    name: Test migrate up with sqlite3
+    steps:
+      - uses: actions/checkout@v3
+      - name: Check with version flag
+        uses: ./
+        with:
+          database: sqlite3://database.sqlite3.db
+          version: true
+      - name: Check basic execution with defaults
+        uses: ./
+        with:
+          database: sqlite3://database.sqlite3.db
           verbose: true
