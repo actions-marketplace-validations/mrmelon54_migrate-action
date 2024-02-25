@@ -5,11 +5,11 @@ COPY go.mod go.sum /
 COPY *.go ./
 COPY sqlite-migrate/*.go ./sqlite-migrate/
 RUN CGO_ENABLED=0 GOOS=linux go build -o /app
-RUN CGO_ENABLED=0 GOOS=linux go build -o /sqlite-migrate ./sqlite-migrate/main.go
+RUN CGO_ENABLED=0 GOOS=linux go build -o /migrate-sqlite ./sqlite-migrate/main.go
 
 FROM migrate/migrate
 
 COPY --from=builder ./app ./
-COPY --from=builder ./sqlite-migrate ./
+COPY --from=builder ./migrate-sqlite ./
 
 ENTRYPOINT ["/app"]
