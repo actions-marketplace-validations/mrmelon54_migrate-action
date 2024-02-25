@@ -30,7 +30,7 @@ func main() {
 
 	scheme := strings.Split(args[2], "://")[0]
 	if scheme == "sqlite3" {
-		migCmd = "/sqlite-migrate"
+		migCmd = "/migrate-sqlite"
 	}
 
 	arguments := []string{
