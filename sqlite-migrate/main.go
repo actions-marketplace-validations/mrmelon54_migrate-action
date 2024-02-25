@@ -7,6 +7,7 @@ import (
 	_ "github.com/golang-migrate/migrate/v4/database/sqlite3"
 	_ "github.com/golang-migrate/migrate/v4/source/file"
 	_ "github.com/mattn/go-sqlite3"
+	"log"
 	"strconv"
 )
 
@@ -22,8 +23,9 @@ func main() {
 
 	m, err := migrate.New("file://"+*pathFlag, *databaseFlag)
 	if err != nil {
-		return
+		panic(err)
 	}
+	m.Log = &Logger{}
 
 	steps := false
 	var n uint64
@@ -56,3 +58,9 @@ func main() {
 	}
 	fmt.Println("Migrate successful")
 }
+
+type Logger struct{}
+
+func (l *Logger) Printf(format string, v ...interface{}) { log.Printf(format, v) }
+
+func (l *Logger) Verbose() bool { return true }
