@@ -1,5 +1,5 @@
 # action.yml
-name: 'Migrate database'
+name: 'Go Migrate Database'
 author: 'MrMelon54'
 description: 'Database seed tool built with golang-migrate'
 inputs:
