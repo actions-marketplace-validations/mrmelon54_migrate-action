@@ -1,6 +1,6 @@
 # action.yml
 name: 'Migrate database'
-author: 'Vladimir Pavlov'
+author: 'MrMelon54'
 description: 'Database seed tool built with golang-migrate'
 inputs:
   path:
@@ -22,13 +22,13 @@ inputs:
   verbose:
     description: 'Print verbose logging'
     default: ''
-  version: 
+  version:
     description: 'Print version'
     default: ''
 runs:
   using: 'docker'
   image: 'Dockerfile'
-  args: 
+  args:
     - ${{ inputs.path }}
     - ${{ inputs.database }}
     - ${{ inputs.prefetch }}

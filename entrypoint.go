@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"errors"
 	"io"
 	"log"
 	"net/url"
@@ -11,11 +12,11 @@ import (
 )
 
 func queryEscape(s string) string {
-	split := strings.Split(s, "://")
-	if len(split) != 2 {
+	schemePath := strings.Split(s, "://")
+	if len(schemePath) != 2 {
 		panic("invalid database uri")
 	}
-	usernamePassword := strings.Split(split[1], "@")
+	usernamePassword := strings.Split(schemePath[1], "@")
 	password := strings.Split(usernamePassword[0], ":")
 	if len(password) == 2 {
 		s = strings.Replace(s, password[1], url.QueryEscape(password[1]), 3)
@@ -25,6 +26,12 @@ func queryEscape(s string) string {
 
 func main() {
 	args := os.Args
+	migCmd := "migrate"
+
+	scheme := strings.Split(args[2], "://")[0]
+	if scheme == "sqlite3" {
+		migCmd = "/sqlite-migrate"
+	}
 
 	arguments := []string{
 		"-path",
@@ -47,7 +54,7 @@ func main() {
 
 	arguments = append(arguments, args[7])
 
-	cmd := exec.Command("migrate", arguments...)
+	cmd := exec.Command(migCmd, arguments...)
 	var stdBuffer bytes.Buffer
 	mw := io.MultiWriter(os.Stdout, &stdBuffer)
 
@@ -57,12 +64,12 @@ func main() {
 	// Execute the command
 	if err := cmd.Run(); err != nil {
 		log.Printf("error: %v", err)
-		exitError, ok := err.(*exec.ExitError)
+		var exitError *exec.ExitError
+		ok := errors.As(err, &exitError)
 		if ok {
 			os.Exit(exitError.ExitCode())
 		}
 	}
 
 	log.Println(stdBuffer.String())
-
 }
